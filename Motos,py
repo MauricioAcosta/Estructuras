@@ -1,9 +1,0 @@
-
-from cola import *
-import random
-
-class Motos:
-
-        def main():
-
-          numAleatorio= random.randrange(1,10)

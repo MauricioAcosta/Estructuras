@@ -13,10 +13,10 @@ pila = Pila()
 
 pila.apilar(Peliculas(2001,"fantasy","Andres"))
 pila.apilar(Peliculas(2012,"romance","Hasta"))
-pila.apilar(Peliculas(2010,"accion","Niclas"))
-pila.apilar(Peliculas(2001,"horror","arnold"))
+pila.apilar(Peliculas(2010,"accion","Nicolas"))
+pila.apilar(Peliculas(2001,"horror","Arnold"))
 
-print pila.es_vacia()
 while pila.es_vacia() == False:
     print pila.desapilar().author
 print "termine"
+print "La pila esta vacia:",pila.es_vacia()
