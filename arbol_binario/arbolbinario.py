@@ -12,14 +12,6 @@ def preorden(arbol):
 	else:
 		return arbol.valor+preorden(arbol.izquierda)+preorden(arbol.derecha)
 
-def buscar(arbol,valor):
-	if arbol==None:
-		return False
-	elif arbol.valor==valor:
-		return True
-	else:
-		return buscar(arbol.izquierda) or buscar(arbol.derecha)
-
 def evaluar(arbol):
 	if arbol.valor=='+':
 		return evaluar(arbol.izquierda)+evaluar(arbol.derecha)
