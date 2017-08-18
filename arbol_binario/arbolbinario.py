@@ -26,3 +26,6 @@ def evaluar(arbol):
 
 print (preorden(Nodo('+',Nodo('5'),Nodo('-',Nodo('8'),Nodo('6')))))
 print (evaluar(Nodo('+',Nodo('5'),Nodo('-',Nodo('8'),Nodo('6')))))
+
+print ( evaluar( Nodo('+',Nodo('-',Nodo('7'),Nodo('/',Nodo('10'),Nodo('2'))),Nodo('3')) ))
+print (preorden( Nodo('+',Nodo('-',Nodo('7'),Nodo('/',Nodo('10'),Nodo('2'))),Nodo('3')) ))
