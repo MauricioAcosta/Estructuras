@@ -22,9 +22,22 @@ def evaluar(arbol):
 		return evaluar(arbol.izquierda)*evaluar(arbol.derecha)
 	elif arbol.valor=='/':
 		return evaluar(arbol.izquierda)/evaluar(arbol.derecha)
+	elif arbol.valor=='='
 	else:
 		return int(arbol.valor)
 
+dic={}
 while True:
-    numero=raw_input().split()
-	print numero
+	c=0
+	expresion=stdin.readline().split( )
+
+	print expresion
+
+	if not expresion:
+		break
+
+	for i in expresion:
+		dic[c]= expresion[0]
+		expresion.pop(0)
+		c=c+1
+	print dic
