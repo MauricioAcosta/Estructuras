@@ -1,16 +1,17 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from sys import stdin
 class Nodo():
 	def __init__ (self,valor,izq=None,der=None):
 		self.valor=valor
 		self.izquierda=izq
 		self.derecha=der
 
-def preorden(arbol):
+def postorden(arbol):
 	if arbol==None:
 		return ""
 	else:
-		return arbol.valor+preorden(arbol.izquierda)+preorden(arbol.derecha)
+		return postorden(arbol.izquierda)+postorden(arbol.derecha)+arbol.valor
 
 def evaluar(arbol):
 	if arbol.valor=='+':
@@ -24,9 +25,6 @@ def evaluar(arbol):
 	else:
 		return int(arbol.valor)
 
-print (preorden(Nodo('+',Nodo('5'),Nodo('-',Nodo('8'),Nodo('6')))))
-print (evaluar(Nodo('+',Nodo('5'),Nodo('-',Nodo('8'),Nodo('6')))))
-
-print ( evaluar( Nodo('+',Nodo('-',Nodo('7'),Nodo('/',Nodo('10'),Nodo('2'))),Nodo('3')) ))
-print (preorden( Nodo('+',Nodo('-',Nodo('7'),Nodo('/',Nodo('10'),Nodo('2'))),Nodo('3')) ))
-print (preorden( Nodo('3',Nodo('2'),Nodo('+',Nodo('5', Nodo('8',Nodo('-',Nodo('+',Nodo('A')))))))  ))
+while True:
+    numero=raw_input().split()
+	print numero
