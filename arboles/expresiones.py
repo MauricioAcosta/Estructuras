@@ -1,9 +1,10 @@
-#!/usr/bin/python
+#!/usr/bin/python3.6
 # -*- coding: utf-8 -*-
 import sys
 from sys import stdin
 sys.path.append("..")
 from Pila import *
+
 
 class Nodo:
 	def __init__(self , valor):
@@ -22,9 +23,13 @@ class ArbolPosFijo:
 			return 0
 
 	def construirDiccionario(self,indice,valor):
-	    self.diccionario[indice]=[valor]
+		self.diccionario[indice]=[valor]
 	def getValorDiccionario(self,indice):
-	    return self.diccionario.get(indice)
+		return self.diccionario.get(indice)
+
+	def variablesDiccionario(self):
+		 for i in self.diccionario:
+			 print ("variable: {} Valor: {}".format(i,str(self.getValorDiccionario(i))))
 
 
 	def evaluar(self, arbol):
@@ -38,7 +43,7 @@ class ArbolPosFijo:
 			try:
 				return self.evaluar(arbol.izquierda)/self.evaluar(arbol.derecha)
 			except ZeroDivisionError:
-				print("No esta permitida la division entre cero")
+				print("Error!! ---> Division entre cero")
 				sys.exit()
 		try:
 			return float(arbol.valor)
@@ -51,36 +56,44 @@ class ArbolPosFijo:
 		posfijo.pop()
 		variable=posfijo.pop()
 		pilaOperador = Pila()
+		#Recorra todo el string
+		for caracter in posfijo :
 
-		for caracter in posfijo:
+			# si NO es operador lo apila
 			if self.buscarOperador(caracter)!=1:
 				arbol = Nodo(caracter)
 				pilaOperador.apilar(arbol)
 
+			# Operador
 			else:
+				# desapila dos nodos
 				arbol = Nodo(caracter)
-                arbol1 = pilaOperador.desapilar()
-                arbol2 = pilaOperador.desapilar()
-                arbol.derecha = arbol1
-                arbol.izquierda = arbol2
-                pilaOperador.apilar(arbol)
+				arbol1 = pilaOperador.desapilar()
+				arbol2 = pilaOperador.desapilar()
 
-        #el ultimo elemento de la pila sera el arbol
+				# los convierte en hijos
+				arbol.derecha = arbol1
+				arbol.izquierda = arbol2
+
+				# Anade nuevo arbol a la pila
+				pilaOperador.apilar(arbol)
+
+		# Al final el ultimo elemento de la pila sera el arbol
 		arbol = pilaOperador.desapilar()
 		self.construirDiccionario(variable,self.evaluar(arbol))
 		return self.evaluar(arbol)
 
-def main():
 
-    while True:
-        obj = ArbolPosFijo()
-        expresion = stdin.readline().split()
-        if not expresion:
-            break
-        print "Valor resultante es: "+ str(obj.construirArbol(expresion))
-        print "diccionario valor A "+ str(obj.getValorDiccionario('A'))
-        print "diccionario valor B "+ str(obj.getValorDiccionario('B'))
-        print "diccionario valor C "+ str(obj.getValorDiccionario('C'))
+def main():
+	obj = ArbolPosFijo()
+	while True:
+	  expresion = stdin.readline().split()
+	  if not expresion:
+		  break
+	  print (' '.join(expresion))
+	  print ("El valor resultante es: {} ".format(str(obj.construirArbol(expresion))))
+	  obj.variablesDiccionario()
+
 
 if __name__ == '__main__':
-    main()
+	main()
