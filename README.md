@@ -25,6 +25,6 @@ Arbol binario en preorden
 
 + Implementación `script arboles/arbolbinario.py`
 
-Expresiones aritmeticas Arbol en Porfijo
+Expresiones aritmeticas Arbol en Posfijo
 ==================================================
 + Implementación `script arboles/expresiones.py`
