@@ -29,7 +29,7 @@ class ArbolPosFijo:
 
 	def variablesDiccionario(self):
 		 for i in self.diccionario:
-			 print ("variable: {} Valor: {}".format(i,str(self.getValorDiccionario(i))))
+			 print ("variable: {} --> Valor: {}".format(i,str(self.getValorDiccionario(i))))
 
 
 	def evaluar(self, arbol):
@@ -89,10 +89,11 @@ def main():
 	while True:
 	  expresion = stdin.readline().split()
 	  if not expresion:
+		  print ('--*-- Variables Finales --*--')
+		  obj.variablesDiccionario()
 		  break
 	  print (' '.join(expresion))
 	  print ("El valor resultante es: {} ".format(str(obj.construirArbol(expresion))))
-	  obj.variablesDiccionario()
 
 
 if __name__ == '__main__':
