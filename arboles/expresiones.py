@@ -1,10 +1,8 @@
 #!/usr/bin/python3.5
 # -*- coding: utf-8 -*-
-import sys
 from sys import stdin
-sys.path.append("..")
+import sys.path.append("..")
 from Pila import *
-
 
 class Nodo:
 	def __init__(self , valor):
@@ -50,8 +48,6 @@ class ArbolPosFijo:
 		except:
 			return (self.getValorDiccionario(arbol.valor))[0]
 
-
-
 	def construirArbol(self, posfijo):
 		posfijo.pop()
 		variable=posfijo.pop()
@@ -83,18 +79,19 @@ class ArbolPosFijo:
 		self.construirDiccionario(variable,self.evaluar(arbol))
 		return self.evaluar(arbol)
 
-
 def main():
 	obj = ArbolPosFijo()
 	while True:
+
 	  expresion = stdin.readline().split()
 	  if not expresion:
+
 		  print ('--*-- Variables Finales --*--')
 		  obj.variablesDiccionario()
 		  break
+	  
 	  print (' '.join(expresion))
 	  print ("El valor resultante es: {} ".format(str(obj.construirArbol(expresion))))
-
 
 if __name__ == '__main__':
 	main()
