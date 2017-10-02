@@ -1,106 +1,140 @@
-import ply.lex as lex
-import re
-import codecs
-import os
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+from sys import stdin
 import sys
+sys.path.append("..")
+from Pila import *
+import re
 
-tokens = ['ID','NUMBER','PLUS','MINUS','TIMES','DIVIDE',
-          'ODD', 'ASSIGN','ASSING','ME','LT','LTE','GT',
-          'GTE','LPARENT','RPARENT','COMMA','SEMMICOLOM',
-          'DDT','UPDATE'
-          ]
-reservadas = {
-          'begin':'BEGIN',
-          'end':'END',
-          'if':'IF',
-          'then':'THEN',
-          'while':'WHILE',
-          'do':'DO',
-          'call':'CALL',
-          'const':'CONST',
-          'int':'INT',
-          'procedure':'PROCEDURE',
-          'out':'OUT',
-          'in':'IN',
-          'else':'ELSE',
-}
+class Nodo:
+    def __init__(self , valor):
+        self.valor = valor
+        self.izquierda = None
+        self.derecha = None
 
-tokens = tokens + list(reservadas.values())
+class ArbolPosFijo:
+    diccionario={}
+    def buscarOperador(self, caracter):
+        if (caracter == '+' or caracter == '-' or caracter == '*' or caracter == '/'):
+            return 1
+        elif(type(caracter)==int):
+            return 2
+        else:
+            return 0
 
-t_ignore = '\t'
-t_PLUS = r'\+'
-t_MINUS = r'\-'
-t_TIMES = r'\*'
-t_ODD = r'ODD'
-t_ASSING = r'='
-t_NE = r'<>'
-t_LT = r'<'
-t_LTE = r'<='
-t_GT = r'>'
-t_GTE = r'>='
-t_LPARENT = r'\('
-t_RPARENT = r'\)'
-t_COMMA = r','
-t_SEMMICOLOM = r';'
-t_DDT = r'\.'
-t_UPDATE = r':='
+    def construirDiccionario(self,indice,valor):
+        self.diccionario[indice]=[valor]
+    def getValorDiccionario(self,indice):
+        return self.diccionario.get(indice)
 
-def t_ID(token):
-          #reconocer las variables
-          r'[a-zA-Z_][a-zA-Z0-9_]*'
-          if token.value.upper() in keywords:
-                    token.value = t.value.upper()
-                    token.type = t.value
-          return token
+    def variablesDiccionario(self):
+         for i in self.diccionario:
+             print ("variable: {} --> Valor: {}".format(i,str(self.getValorDiccionario(i))))
 
-def t_COMMENT(token):
-          #reconocer un comentario
-          r'\#.*'
-          pass
-def t_NUMBER(token):
-          #reconocer los numeros solo enteros
-          r'\d+'
-          token.value = int(t.value)
-          return t
-def t_error(token):
-          print ("caracter ilegal '%s'" % token.value[0])
-          token.lexer.sikip(1)
 
-def buscarFicheros(directorio):
-          ficheros = []
-          numArchivo = ''
-          respuesta= False
-          cont = 1
+    def evaluar(self, arbol):
+        if arbol.valor=='+':
+            return self.evaluar(arbol.izquierda)+self.evaluar(arbol.derecha)
+        if arbol.valor=='-':
+            return self.evaluar(arbol.izquierda)-self.evaluar(arbol.derecha)
+        if arbol.valor=='*':
+            return self.evaluar(arbol.izquierda)*self.evaluar(arbol.derecha)
+        if arbol.valor=='/':
+            try:
+                return self.evaluar(arbol.izquierda)/self.evaluar(arbol.derecha)
+            except ZeroDivisionError:
+                print("Error!! ---> Division entre cero")
+                sys.exit()
+        try:
+            return float(arbol.valor)
+        except:
+            return (self.getValorDiccionario(arbol.valor))[0]
 
-          for base, dirs, files in os.walk(directorio):
-                    ficheros.append(files)
+    def evaluarCaracteres(self, aux, l1 , l2):
+        errores =0
+        for x in aux:
+            if re.match('^[-+]?[0-9]+$', x):
+                l1.append("num")
+                l2.append(x)
+                #print ("Numero")
+            elif re.match('^[a-zA-Z_][a-zA-Z0-9_]*$', x):
+                l1.append("var")
+                l2.append(x)
+                #print ("Letra")
+            elif re.match('[-|=|+|*|/]', x):
+                l1.append("ope")
+                l2.append(x)
+                #print ("Operaciones")
+            else:
+                l1.append("Token No Valido")
+                l2.append(x)
+                errores+=1
+                #print ("Operaciones")
+        return errores
 
-          for file in files:
-                    print (str(cont)+ ". "+file )
-                    cont = cont+1
 
-          while respuesta == False:
-                    numArchivo = raw_input('\nNumero del test: ')
-                    for file in files:
-                              if file == files[int(numArchivo)-1]:
-                                        respuesta = True
-                                        break
-          print "Has escogido \"%s\"\n" % %files[int(numArchivo)-1]
-          return files[int(numArchivo)-1]
 
-#directorio donde se encuentran los archivos de prueba
-#lo puedes encontrar facilmente parandote sobre el directorio en una terminal con pwd
-directorio = '/home/gnome/Estructuras/test/'
-archivo = buscarFicheros(directorio)
-test = directorio+archivo
-fileopen = codecs.open(test,'r','utf-8')
-cadena = fileopen.read()
-fileopen.close()
+    def construirArbol(self, posfijo):
+        posfijo.pop()
+        variable=posfijo.pop()
+        pilaOperador = Pila()
+        #Recorra todo el string
+        for caracter in posfijo :
 
-analizador.input(cadena)
+            # si NO es operador lo apila
+            if self.buscarOperador(caracter)!=1:
+                arbol = Nodo(caracter)
+                pilaOperador.apilar(arbol)
 
-while True:
-          token = analiador.token()
-          if not token:
-                    break
-          print (token)
+            # Operador
+            else:
+                # desapila dos nodos
+                arbol = Nodo(caracter)
+                arbol1 = pilaOperador.desapilar()
+                arbol2 = pilaOperador.desapilar()
+
+                # los convierte en hijos
+                arbol.derecha = arbol1
+                arbol.izquierda = arbol2
+
+                # Anade nuevo arbol a la pila
+                pilaOperador.apilar(arbol)
+
+        # Al final el ultimo elemento de la pila sera el arbol
+        arbol = pilaOperador.desapilar()
+        self.construirDiccionario(variable,self.evaluar(arbol))
+        return self.evaluar(arbol)
+
+    def imprimirTablaTokens(self,l1 , l2):
+        a = 0
+        for m in l1:
+            print(l1[a] + "   " + l2[a])
+            a = a+1
+        print("--*--*--*--*--")
+
+def main():
+    obj = ArbolPosFijo()
+    err=0
+    lTipo = []
+    lValor = []
+    while True:
+
+      expresion = stdin.readline().split()
+      if not expresion:
+
+          print ('--*-- Variables Finales --*--')
+          obj.variablesDiccionario()
+          #obj.imprimirTablaTokens(lTipo,lValor)
+          break
+      print (' '.join(expresion))
+      err=obj.evaluarCaracteres(expresion, lTipo, lValor)
+
+      if(err==0):
+
+          print ("El valor resultante es: "+ str(obj.construirArbol(expresion)))
+      #else:
+          #obj.imprimirTablaTokens(lTipo,lValor)
+    obj.imprimirTablaTokens(lTipo,lValor)
+
+if __name__ == '__main__':
+    main()
