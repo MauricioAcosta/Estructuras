@@ -66,6 +66,7 @@ class ArbolPosFijo:
                 l1.append("Token No Valido")
                 l2.append(x)
                 errores+=1
+
         return errores
 
 
@@ -113,6 +114,7 @@ def main():
     err=0
     lTipo = []
     lValor = []
+    evaluar=True
     while True:
 
       expresion = stdin.readline().split()
@@ -123,9 +125,14 @@ def main():
           break
       print (' '.join(expresion))
       err=obj.evaluarCaracteres(expresion, lTipo, lValor)
+      print(err)
 
-      if(err==0):
+      if(err==0) and evaluar:
+
           print ("El valor resultante es: "+ str(obj.construirArbol(expresion)))
+      else:
+          evaluar=False
+
     obj.imprimirTablaTokens(lTipo,lValor)
 
 if __name__ == '__main__':
