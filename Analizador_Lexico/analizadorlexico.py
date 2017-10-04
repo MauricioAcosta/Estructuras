@@ -54,22 +54,18 @@ class ArbolPosFijo:
         errores =0
         for x in aux:
             if re.match('^[-+]?[0-9]+$', x):
-                l1.append("num")
+                l1.append("numero")
                 l2.append(x)
-                #print ("Numero")
             elif re.match('^[a-zA-Z_][a-zA-Z0-9_]*$', x):
-                l1.append("var")
+                l1.append("variable")
                 l2.append(x)
-                #print ("Letra")
             elif re.match('[-|=|+|*|/]', x):
-                l1.append("ope")
+                l1.append("operador")
                 l2.append(x)
-                #print ("Operaciones")
             else:
                 l1.append("Token No Valido")
                 l2.append(x)
                 errores+=1
-                #print ("Operaciones")
         return errores
 
 
@@ -124,16 +120,12 @@ def main():
 
           print ('--*-- Variables Finales --*--')
           obj.variablesDiccionario()
-          #obj.imprimirTablaTokens(lTipo,lValor)
           break
       print (' '.join(expresion))
       err=obj.evaluarCaracteres(expresion, lTipo, lValor)
 
       if(err==0):
-
           print ("El valor resultante es: "+ str(obj.construirArbol(expresion)))
-      #else:
-          #obj.imprimirTablaTokens(lTipo,lValor)
     obj.imprimirTablaTokens(lTipo,lValor)
 
 if __name__ == '__main__':
