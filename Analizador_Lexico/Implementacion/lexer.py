@@ -1,10 +1,10 @@
 import ply.lex as lex
 
-tokens = [ 'NOMBRE','NUMERO','OPERACION' ]
+tokens = [ 'VARIABLE','NUMERO','OPERACION' ]
 
 t_ignore = ' \t\n'
 t_OPERACION = r'[-+*/=]'
-t_NOMBRE = r'[a-zA-Z_][a-zA-Z0-9_]*'
+t_VARIABLE = r'[a-zA-Z_][a-zA-Z0-9_]*'
 
 def t_NUMERO(t):
     r'\d+'
@@ -17,7 +17,7 @@ def t_error(t):
     t.lexer.skip(1)
 
 lex.lex() # Build the lexer
-archivo=open("ejemplo.txt")
+archivo=open('ejemplo.txt','r')
 linea=archivo.readline()
 while linea != '':
     lex.input(linea)
