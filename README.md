@@ -32,3 +32,8 @@ Expresiones aritmeticas Arbol en Posfijo
 Analizador lexico de expresiones en Posfijo
 ==================================================
 + Implementación `script Analizador_Lexico/analizadorlexico.py`
++ Nueva implementación con ply.lex `Estructuras/Analizador_Lexico/Implementacion/lexer.py`
+
+Analizador lexico Pseint en Español
+==================================================
++ Implementación `Estructuras/Analizador_Lexico/Implementacion/AnalizadorPseint.py`
