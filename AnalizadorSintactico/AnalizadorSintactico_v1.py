@@ -3,75 +3,104 @@ import sys
 sys.path.append("..")
 from Pila import *
 import re
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+from sys import stdin
+import sys
+sys.path.append("..")
+from Pila import *
+import re
 
-class Nodo():
-	def __init__ (self,valor,izq=None,der=None):
-		self.valor=valor
-		self.izquierda=izq
-        self.derecha=der
+class Nodo:
+    def __init__(self , valor):
+        self.valor = valor
+        self.izquierda = None
+        self.derecha = None
 
 class ArbolPosFijo:
-	diccionario={}
-	# def buscarOperador(self, caracter):
-    #     if caracter == '=':
-    #         return 0
-	# 	if (caracter == '+' or caracter == '-' or caracter == '*' or caracter == '/'):
-	# 		return 1
-	# 	elif(type(caracter)==int):
-	# 		return 2
 
-	def construirArbol(self, posfijo):
+    def logic(caracter):
+        aux=-1
+        terminal=[]
+        expresion=[]
+        if re.match('^[-+]?[0-9]+$', caracter):
+            print("Numero", caracter)
+            terminal.append(caracter)
+            aux-=1
+        elif re.match('^[a-zA-Z_][a-zA-Z0-9_]*$', caracter):
+            terminal.append(caracter)
+            print("Variable",caracter)
+            aux-=1
+        elif re.match('[-|=|+|*|/]',caracter):
+            expresion.append(caracter)
+            print("signo",caracter)
+            aux-=1
 
+    def construirArbol(self, posfijo):
         # posfijo.pop()
-		# variable=posfijo.pop()
-		pilaOperador = Pila()
-		#Recorra todo el string
-		for caracter in posfijo :
+        # variable=posfijo.pop()
+        pilaOperador = Pila()
+        #Recorra todo el string
+        for caracter in posfijo :
 
-			# si NO es operador lo apila
-			if self.buscarOperador(caracter)==2:
-				arbol = Nodo(caracter)
-				pilaOperador.apilar(arbol)
+            # si NO es operador lo apila
+            if self.logic(caracter):
+                arbol = Nodo(caracter)
+                pilaOperador.apilar(arbol)
 
-			# Operador
-			else:
-				# desapila dos nodos
-				arbol = Nodo(caracter)
-				arbol1 = pilaOperador.desapilar()
-				arbol2 = pilaOperador.desapilar()
+            # Operador
+            else:
+                # desapila dos nodos
+                arbol = Nodo(caracter)
+                arbol1 = pilaOperador.desapilar()
+                arbol2 = pilaOperador.desapilar()
 
-				# los convierte en hijos
-				arbol.derecha = arbol1
-				arbol.izquierda = arbol2
+                # los convierte en hijos
+                arbol.derecha = arbol1
+                arbol.izquierda = arbol2
 
-				# Anade nuevo arbol a la pila
-				pilaOperador.apilar(arbol)
+                # Anade nuevo arbol a la pila
+                pilaOperador.apilar(arbol)
 
-		# Al final el ultimo elemento de la pila sera el arbol
-		arbol = pilaOperador.desapilar()
-		self.construirDiccionario(variable,self.evaluar(arbol))
-		return arbol
+        # Al final el ultimo elemento de la pila sera el arbol
+        arbol = pilaOperador.desapilar()
 
 
+    def imprimirTablaTokens(self,l1 , l2):
+        a = 0
+        for m in l1:
+            print(l1[a] + "   " + l2[a])
+            a = a+1
+        print("--*--*--*--*--")
 
-def logic(expresion):
-    for x in expresion:
-        if re.match('^[-+]?[0-9]+$', x):
-            l1.append("numero")
-            l2.append(x)
-        elif re.match('^[a-zA-Z_][a-zA-Z0-9_]*$', x):
-            l1.append("variable")
-            l2.append(x)
-        elif re.match('[-|=|+|*|/]', x):
-            l1.append("operador")
-            l2.append(x)
-        # else:
-        #     l1.append("Token No Valido")
-        #     l2.append(x)
-        #     errores+=1
 
 def main():
-    pass
+    expresion=stdin.readline().split()
+    arbol = ArbolPosFijo()
+    arbol.construirArbol(expresion)
+    # arbol.imprimirTablaTokens()
+
+
+
 
 if __name__ == '__main__':
     main()
+
+# def logic(expresion):
+#     aux=-1
+#     expre=[]
+#     terminal=[]
+#     for _ in range(len(expresion)):
+#         print(expresion[aux])
+#         if re.match('^[-+]?[0-9]+$', expresion[aux]):
+#             # print("Numero", expresion[aux])
+#             terminal.append(expresion[aux])
+#             aux-=1
+#         elif re.match('^[a-zA-Z_][a-zA-Z0-9_]*$', expresion[aux]):
+#             terminal.append(expresion[aux])
+#             # print("Variable",expresion[aux])
+#             aux-=1
+#         elif re.match('[-|=|+|*|/]',expresion[aux]):
+#             expre.append(expresion[aux])
+#             # print("signo",expresion[aux])
+#             aux-=1
