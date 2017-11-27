@@ -34,3 +34,7 @@ Analizador lexico de expresiones en Posfijo
 Analizador lexico Pseint en Español
 ==================================================
 + Implementación `Estructuras/Analizador_Lexico/Implementacion/AnalizadorPseint.py`
+
+Analizador sintactico
+==================================================
++ Implementación `Estructuras/AnalizadorSintactico/AnalizadorSintactico_v1.py
