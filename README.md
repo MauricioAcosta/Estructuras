@@ -37,4 +37,4 @@ Analizador lexico Pseint en Español
 
 Analizador sintactico
 ==================================================
-+ Implementación `Estructuras/AnalizadorSintactico/AnalizadorSintactico_v1.py
++ Implementación `Estructuras/AnalizadorSintactico/AnalizadorSintactico_v1.py`
